@@ -1,10 +1,12 @@
 // Require apiKeys object from keys.js and save object in a variable
 var apiKeys = require("./keys.js");
 
-// Require node packages for Twitter, Spotify, and Request
+// Require node packages for Twitter, Spotify, Request, and fs
 var Twitter = require('twitter');
 var Spotify = require('node-spotify-api');
 var request = require('request');
+var fs = require("fs");
+
 
 // Capture the values of the properties in the twitterKeys object in variables
 var consumerKey = apiKeys.twitterKeys.consumer_key;
@@ -94,7 +96,7 @@ function retrieveSongInfo () {
 
 // Helper function to display default spotify song info
 function defaultSongInfo () {
-		spotify.search({ type: 'track', query: 'the sign', limit: 1}, function(err, data) {
+		spotify.search({ type: 'track', query: 'the sign ace of base', limit: 20}, function(err, data) {
 		  if (err) {
 		    return console.log('Error occurred: ' + err);
 		  }
@@ -134,7 +136,6 @@ function retrieveMovieInfo() {
 		});
 }
 
-
 // Helper function to display default OMDB movie info
 function defaultMovieInfo() {
 		request("http://www.omdbapi.com/?t=Mr.+Nobody&y=&plot=short&apikey=40e9cece", function(error, response, body) {
@@ -155,28 +156,76 @@ function defaultMovieInfo() {
 		});
 }
 
+
+// var randomArr;
+
+// Helper function to read from the "random.txt" file.
+function readDoc() {
+		fs.readFile("random.txt", "utf8", function(error, data) {
+
+		    // If the code experiences any errors it will log the error to the console.
+		    if (error) {
+		        return console.log(error);
+		    }
+
+		    // We will then print the contents of data
+		    // console.log(data);
+
+		    // Then split it by commas (to make it more readable)
+		    var dataArr = data.split(",");
+		    var random1 = dataArr[0];
+		    var random2 = dataArr[1];
+		    // We will then re-display the content as an array for later use.
+		    // console.log(dataArr);
+		    // console.log(random1);
+		    // console.log(random2);
+
+		    if (random1 === 'my-tweets') {
+			liriCommand === 'my-tweets';
+			liriCommandDetail === random2;
+			retrieveTweets();
+			}
+
+			else if (random1 === 'spotify-this-song') {
+				liriCommand === 'spotify-this-song';
+				liriCommandDetail === random2;
+				retrieveSongInfo();
+			}
+
+			else if (random1 === 'movie-this') {
+				liriCommand === 'movie-this';
+				liriCommandDetail === random2;
+				retrieveMovieInfo();
+			}
+
+		});
+}
+
 // Liri commands
 if (liriCommand === 'my-tweets') {
 	retrieveTweets();
 };
 
-if (liriCommand === 'spotify-this-song' && userInput !=="") {
+if (liriCommand === 'spotify-this-song' && userInput !== undefined) {
 	retrieveSongInfo();
 }
-else if (liriCommand === 'spotify-this-song' && userInput == "") {
+else if (liriCommand === 'spotify-this-song' && userInput == undefined) {
 	defaultSongInfo();
 };
 
-if (liriCommand === 'movie-this' && userInput !=="") {
+if (liriCommand === 'movie-this' && userInput !== undefined) {
 	retrieveMovieInfo();
 }
-else if (liriCommand === 'movie-this' && userInput == "") {
+else if (liriCommand === 'movie-this' && userInput == undefined) {
 	defaultMovieInfo();
 };
 
 if (liriCommand === 'do-what-it-says') {
-	retrieveTweets();
-}
+	readDoc();
+};
 
 
-defaultMovieInfo();
+
+
+
+// defaultMovieInfo();
