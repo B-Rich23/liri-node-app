@@ -85,13 +85,6 @@ function retrieveSongInfo () {
 		console.log(data.tracks.items[0].preview_url); 
 		console.log(data.tracks.items[0].album.name); 
 		});
-
-  // .then(function(response) {
-  //   console.log(response);
-  // })
-  // .catch(function(err) {
-  //   console.log(err);
-  // };
 }
 
 // Helper function to display default spotify song info
@@ -107,14 +100,23 @@ function defaultSongInfo () {
 		console.log(data.tracks.items[0].preview_url); 
 		console.log(data.tracks.items[0].album.name); 
 		});
-
-  // .then(function(response) {
-  //   console.log(response);
-  // })
-  // .catch(function(err) {
-  //   console.log(err);
-  // };
 }
+
+// Helper function to retrieve spotify song info
+function retrieveSongRandom () {
+		spotify.search({ type: 'track', query: '' + random2 + '', limit: 1}, function(err, data) {
+		  if (err) {
+		    return console.log('Error occurred: ' + err);
+		  }
+		 
+		console.log(data.tracks.items[0].album.artists[0].name); 
+		// console.log(data.tracks.items); 
+		console.log(data.tracks.items[0].name); 
+		console.log(data.tracks.items[0].preview_url); 
+		console.log(data.tracks.items[0].album.name); 
+		});
+}
+
 
 // Helper function to display OMDB movie info
 function retrieveMovieInfo() {
@@ -156,8 +158,28 @@ function defaultMovieInfo() {
 		});
 }
 
+// Helper function to display OMDB movie info
+function retrieveMovieRandom() {
+		request("http://www.omdbapi.com/?t=" + random2 + "&y=&plot=short&apikey=40e9cece", function(error, response, body) {
 
-// var randomArr;
+		  // If there were no errors and the response code was 200 (i.e. the request was successful)...
+		  if (!error && response.statusCode === 200) {
+
+			    // Then we print out the imdbRating
+			    console.log(JSON.parse(body).Title);
+			    console.log(JSON.parse(body).Year);
+			    console.log(JSON.parse(body).imdbRating);
+			    console.log(JSON.parse(body).Ratings[1].Source + ' ' + JSON.parse(body).Ratings[1].Value);
+			    console.log(JSON.parse(body).Country);
+			    console.log(JSON.parse(body).Language);
+			    console.log(JSON.parse(body).Plot);
+			    console.log(JSON.parse(body).Actors);
+			  }
+		});
+}
+
+var random1;
+var random2;
 
 // Helper function to read from the "random.txt" file.
 function readDoc() {
@@ -173,32 +195,43 @@ function readDoc() {
 
 		    // Then split it by commas (to make it more readable)
 		    var dataArr = data.split(",");
-		    var random1 = dataArr[0];
-		    var random2 = dataArr[1];
+		    random1 = dataArr[0];
+		    random2 = dataArr[1];
 		    // We will then re-display the content as an array for later use.
 		    // console.log(dataArr);
 		    // console.log(random1);
 		    // console.log(random2);
+		    processFile();
+
+
+		});
+}
+
+function processFile() {
+		    // console.log("This is the value of random1 " + random1);
+		    // console.log("This is the value of random2 " + random2);
 
 		    if (random1 === 'my-tweets') {
-			liriCommand === 'my-tweets';
-			liriCommandDetail === random2;
-			retrieveTweets();
+				liriCommand === 'my-tweets';
+				// liriCommandDetail === random2;
+				retrieveTweets();
 			}
 
 			else if (random1 === 'spotify-this-song') {
-				liriCommand === 'spotify-this-song';
+				liriCommand === random1;
 				liriCommandDetail === random2;
-				retrieveSongInfo();
+				// console.log(liriCommand);
+				// console.log(liriCommandDetail);
+				retrieveSongRandom();
 			}
 
 			else if (random1 === 'movie-this') {
 				liriCommand === 'movie-this';
 				liriCommandDetail === random2;
-				retrieveMovieInfo();
+				retrieveMovieRandom();
 			}
 
-		});
+
 }
 
 // Liri commands
