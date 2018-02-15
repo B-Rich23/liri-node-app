@@ -15,12 +15,12 @@ var accessToken = apiKeys.twitterKeys.access_token_key;
 var accessSecret = apiKeys.twitterKeys.access_token_secret;
 
 
- 
+// Caputure value of new Twitter object in variable
 var client = new Twitter({
-  consumer_key: consumerKey,
-  consumer_secret: consumerSecret,
-  access_token_key: accessToken,
-  access_token_secret: accessSecret
+	  consumer_key: consumerKey,
+	  consumer_secret: consumerSecret,
+	  access_token_key: accessToken,
+	  access_token_secret: accessSecret
 });
 
 
@@ -28,11 +28,11 @@ var client = new Twitter({
 var clientId = apiKeys.spotifyKeys.client_id;
 var clientSecret = apiKeys.spotifyKeys.client_secret;
 
+// Caputure value of new Spotify object in variable
 var spotify = new Spotify({
-  id: clientId,
-  secret: clientSecret
+	  id: clientId,
+	  secret: clientSecret
 });
-
 
 
 // Read in the command line arguments
@@ -40,9 +40,9 @@ var cmdArgs = process.argv;
 
 // The LIRI command will always be the second command line argument
 var liriCommand = cmdArgs[2];
+
+// The LIRI commandDetail will always be the third command line argument
 var liriCommandDetail = cmdArgs[3];
-// var liriCommandDetail2 = cmdArgs[4];
-// var liriCommandDetail3 = cmdArgs[5];
 
 // The parameter to the LIRI command may contain spaces
 var liriArg = '';
@@ -58,7 +58,10 @@ function retrieveTweets() {
 		client.get('statuses/user_timeline', params, function(error, tweets, response) {
 		if (!error) {
 			for (i = 0; i < tweets.length; i++) {
+				// Print most redent 20 tweets
 				console.log(tweets[i].text);
+
+				// Print dates the most 20 recent tweets were created
 				console.log(tweets[i].created_at);
 			}
 
@@ -69,50 +72,57 @@ function retrieveTweets() {
 
 // Song for Spotify API call
 var userInput = liriCommandDetail;
-// var artist = liriCommandDetail2
-// var movie = liriCommandDetail2
 
-// Helper function to retrieve spotify song info
+// Helper function to retrieve Spotify song info
 function retrieveSongInfo () {
 		spotify.search({ type: 'track', query: '' + userInput + '', limit: 1}, function(err, data) {
 		  if (err) {
 		    return console.log('Error occurred: ' + err);
 		  }
-		 
+	
+		// Print the artist's name
 		console.log(data.tracks.items[0].album.artists[0].name); 
-		// console.log(data.tracks.items); 
-		console.log(data.tracks.items[0].name); 
-		console.log(data.tracks.items[0].preview_url); 
+		// Print the song's name
+		console.log(data.tracks.items[0].name);
+		// Print the preview link of the song from Spotify
+		console.log(data.tracks.items[0].preview_url);
+		// Print the album that the song is from
 		console.log(data.tracks.items[0].album.name); 
 		});
 }
 
-// Helper function to display default spotify song info
+// Helper function to display default Spotify song info
 function defaultSongInfo () {
 		spotify.search({ type: 'track', query: 'the sign ace of base', limit: 20}, function(err, data) {
 		  if (err) {
 		    return console.log('Error occurred: ' + err);
 		  }
 		 
+		// Print the artist's name
 		console.log(data.tracks.items[0].album.artists[0].name); 
-		// console.log(data.tracks.items); 
-		console.log(data.tracks.items[0].name); 
-		console.log(data.tracks.items[0].preview_url); 
+		// Print the song's name
+		console.log(data.tracks.items[0].name);
+		// Print the preview link of the song from Spotify
+		console.log(data.tracks.items[0].preview_url);
+		// Print the album that the song is from
 		console.log(data.tracks.items[0].album.name); 
 		});
 }
 
-// Helper function to retrieve spotify song info
+// Helper function to retrieve Spotify song info from random.txt
 function retrieveSongRandom () {
 		spotify.search({ type: 'track', query: '' + random2 + '', limit: 1}, function(err, data) {
 		  if (err) {
 		    return console.log('Error occurred: ' + err);
 		  }
 		 
+		// Print the artist's name
 		console.log(data.tracks.items[0].album.artists[0].name); 
-		// console.log(data.tracks.items); 
-		console.log(data.tracks.items[0].name); 
-		console.log(data.tracks.items[0].preview_url); 
+		// Print the song's name
+		console.log(data.tracks.items[0].name);
+		// Print the preview link of the song from Spotify
+		console.log(data.tracks.items[0].preview_url);
+		// Print the album that the song is from
 		console.log(data.tracks.items[0].album.name); 
 		});
 }
@@ -125,14 +135,21 @@ function retrieveMovieInfo() {
 		  // If there were no errors and the response code was 200 (i.e. the request was successful)...
 		  if (!error && response.statusCode === 200) {
 
-			    // Then we print out the imdbRating
+			    // Print out the Title
 			    console.log(JSON.parse(body).Title);
+			    // Print out the Year movie was released
 			    console.log(JSON.parse(body).Year);
+			    // Print out the imdbRating
 			    console.log(JSON.parse(body).imdbRating);
+			    // Print out the Rotten Tomatoes Rating
 			    console.log(JSON.parse(body).Ratings[1].Source + ' ' + JSON.parse(body).Ratings[1].Value);
+			    // Print out the Country
 			    console.log(JSON.parse(body).Country);
+			    // Print out the Language
 			    console.log(JSON.parse(body).Language);
+			    // Print out the Plot
 			    console.log(JSON.parse(body).Plot);
+			    // Print out the Actors
 			    console.log(JSON.parse(body).Actors);
 			  }
 		});
@@ -145,34 +162,48 @@ function defaultMovieInfo() {
 		  // If there were no errors and the response code was 200 (i.e. the request was successful)...
 		  if (!error && response.statusCode === 200) {
 
-			    // Then we print out the imdbRating
+			    // Print out the Title
 			    console.log(JSON.parse(body).Title);
+			    // Print out the Year movie was released
 			    console.log(JSON.parse(body).Year);
+			    // Print out the imdbRating
 			    console.log(JSON.parse(body).imdbRating);
+			    // Print out the Rotten Tomatoes Rating
 			    console.log(JSON.parse(body).Ratings[1].Source + ' ' + JSON.parse(body).Ratings[1].Value);
+			    // Print out the Country
 			    console.log(JSON.parse(body).Country);
+			    // Print out the Language
 			    console.log(JSON.parse(body).Language);
+			    // Print out the Plot
 			    console.log(JSON.parse(body).Plot);
+			    // Print out the Actors
 			    console.log(JSON.parse(body).Actors);
 			  }
 		});
 }
 
-// Helper function to display OMDB movie info
+// Helper function to display OMDB movie info from random.txt
 function retrieveMovieRandom() {
 		request("http://www.omdbapi.com/?t=" + random2 + "&y=&plot=short&apikey=40e9cece", function(error, response, body) {
 
 		  // If there were no errors and the response code was 200 (i.e. the request was successful)...
 		  if (!error && response.statusCode === 200) {
 
-			    // Then we print out the imdbRating
+			    // Print out the Title
 			    console.log(JSON.parse(body).Title);
+			    // Print out the Year movie was released
 			    console.log(JSON.parse(body).Year);
+			    // Print out the imdbRating
 			    console.log(JSON.parse(body).imdbRating);
+			    // Print out the Rotten Tomatoes Rating
 			    console.log(JSON.parse(body).Ratings[1].Source + ' ' + JSON.parse(body).Ratings[1].Value);
+			    // Print out the Country
 			    console.log(JSON.parse(body).Country);
+			    // Print out the Language
 			    console.log(JSON.parse(body).Language);
+			    // Print out the Plot
 			    console.log(JSON.parse(body).Plot);
+			    // Print out the Actors
 			    console.log(JSON.parse(body).Actors);
 			  }
 		});
@@ -190,38 +221,30 @@ function readDoc() {
 		        return console.log(error);
 		    }
 
-		    // We will then print the contents of data
-		    // console.log(data);
-
-		    // Then split it by commas (to make it more readable)
+		    // Split the data by commas (to make it more readable) and save value as an array
 		    var dataArr = data.split(",");
+
+		    // Capture dataArr index values as variables
 		    random1 = dataArr[0];
 		    random2 = dataArr[1];
-		    // We will then re-display the content as an array for later use.
-		    // console.log(dataArr);
-		    // console.log(random1);
-		    // console.log(random2);
+
+		    // Call function processFile to define variables from asynchronous callback
 		    processFile();
 
 
 		});
 }
 
+// Helper function definesvariables from asynchronous callback and executes liri commands 
 function processFile() {
-		    // console.log("This is the value of random1 " + random1);
-		    // console.log("This is the value of random2 " + random2);
-
 		    if (random1 === 'my-tweets') {
 				liriCommand === 'my-tweets';
-				// liriCommandDetail === random2;
 				retrieveTweets();
 			}
 
 			else if (random1 === 'spotify-this-song') {
 				liriCommand === random1;
 				liriCommandDetail === random2;
-				// console.log(liriCommand);
-				// console.log(liriCommandDetail);
 				retrieveSongRandom();
 			}
 
@@ -260,5 +283,3 @@ if (liriCommand === 'do-what-it-says') {
 
 
 
-
-// defaultMovieInfo();
